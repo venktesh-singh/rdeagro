@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "952490959641",
+    "project_id": "muncheze-truck",
+    "storage_bucket": "muncheze-truck.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:952490959641:android:3810ca7eb775a6536bdb88",
+        "android_client_info": {
+          "package_name": "com.muncheze"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "952490959641-af13dit4tnl96nl829n1nhs4agac39ah.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAdZJS0GMKt4ld5u1P87ukTAv-jRUg2N5c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "952490959641-af13dit4tnl96nl829n1nhs4agac39ah.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
