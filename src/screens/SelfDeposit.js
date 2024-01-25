@@ -31,7 +31,7 @@ const SelfDeposit = ({ navigation }) => {
         path: 'images',
       },
     };
-
+ 
     ImagePicker.launchImageLibrary(options, response => {
       if (response.didCancel) {
         console.log('User cancelled image picker');
@@ -42,8 +42,8 @@ const SelfDeposit = ({ navigation }) => {
         setImageUri(source.uri);
       }
     });
-  };
-
+  };   
+   
   const handleAddAttendance = async () => {
     try {
       const formData = new FormData();
