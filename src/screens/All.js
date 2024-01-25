@@ -39,13 +39,14 @@ const All = () => {
   const location_id = userData?.user?.data?.data?.location_id;
   const remember_token = userData?.user?.data?.remember_token;
   const [selectedCategory, setSelectedCategory] = useState(null);
+  console.log("All Category data remember_token : ", userData?.user); 
 
   const getData = async () => {  
     try {
       if (remember_token) {
         const response = await axios.post(`${baseUrl}/getcategories?remember_token=${remember_token}&business_id=${business_id}&location_id=${location_id}`);
         const responseData = response?.data?.data || []; // Extracting data from the response
-        console.log("Response All Category Data:", responseData);   
+        console.log("Response All Category Data:", JSON.stringify(response.data, null, 2));   
         setCategories(responseData)  
       } else {  
         console.log("Token not getting", remember_token)

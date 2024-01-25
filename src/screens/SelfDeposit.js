@@ -7,9 +7,10 @@ import Footer from '../components/Footer';
 import Entypo from 'react-native-vector-icons/Entypo';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {Images} from '../constants/';
+import RNPickerSelect from 'react-native-picker-select';
 
-const AddAttendanceScreen = ({ navigation }) => {
-  const [storename, setStoreName] = useState('');
+const SelfDeposit = ({ navigation }) => {
+  const [paymenttype, setPaymentType] = useState('');
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
   const [rememberToken, setRememberToken] = useState('');
@@ -83,22 +84,10 @@ const AddAttendanceScreen = ({ navigation }) => {
 
   return (
     <View style={{ flex: 1,backgroundColor:'#e5e5e5', }}>
-      <Header title="Attendance" />
+      <Header title="Self Deposit" />
         <ScrollView>
-          <View style={styles.addmap}>
-              <Text>Map</Text>  
-          </View>
           <View style={styles.container}>
             <View style={{backgroundColor:'#fff',paddingHorizontal:10,paddingVertical:10}}>
-              <View style={[styles.box1]}>
-                <View style={styles.boxshadowicon}>
-                  <Text style={[styles.atttext]}>
-                    <MaterialCommunityIcons name="latitude" size={25} color="#000" /> Lat : 232432.01
-                  </Text>
-                  <Text style={[styles.atttext]}>
-                    <MaterialCommunityIcons name="longitude" size={25} color="#000" /> Long : 232432.01
-                  </Text>
-                </View>
                 <View>
                   <View style={styles.imageContainer}>
                     {imageUri ? (
@@ -117,18 +106,20 @@ const AddAttendanceScreen = ({ navigation }) => {
                       </>
                     )}
                   </View>
-                </View>
               </View>
 
-              <View style={styles.inputContainer}>
-                <Entypo name="user" size={24} color="#000" style={styles.icon} />
-                <TextInput
-                  style={styles.input}
-                  placeholder="Store Name"
-                  value={storename}
-                  onChangeText={text => setStoreName(text)}
-                />
-              </View>
+                <View style={styles.inputContainer}>
+                    <Entypo name="user" size={24} color="#000" style={styles.icon} />
+                    <RNPickerSelect
+                        onValueChange={(value) => console.log(value)}
+                        items={[
+                            { label: 'Football', value: 'football' },
+                            { label: 'Baseball', value: 'baseball' },
+                            { label: 'Hockey', value: 'hockey' },
+                        ]}
+                        style={{ ...pickerSelectStyles }}
+                    />
+                </View>
 
               <View style={styles.inputContainer}>
                 <Entypo name="mail" size={24} color="#000" style={styles.icon} />
@@ -153,7 +144,7 @@ const AddAttendanceScreen = ({ navigation }) => {
               </View>
 
               <TouchableOpacity onPress={handleAddAttendance} style={styles.button} >
-                  <Text style={styles.buttonText}>Mark Out</Text>
+                  <Text style={styles.buttonText}>SAVE CHANGES</Text>
               </TouchableOpacity>
 
             </View>
@@ -164,12 +155,34 @@ const AddAttendanceScreen = ({ navigation }) => {
   );
 };
 
+const pickerSelectStyles = StyleSheet.create({
+    inputIOS: {
+      fontSize: 16,
+      paddingVertical: 12,
+      paddingHorizontal: 10,
+      borderWidth: 1,
+      borderColor: 'gray',
+      borderRadius: 4,
+      color: 'black',
+      paddingRight: 30, // to ensure the text is never behind the icon
+    },
+    inputAndroid: {
+      fontSize: 16,
+      paddingHorizontal: 10,
+      paddingVertical: 8,
+      borderWidth: 0.5,
+      borderColor: 'purple',
+      borderRadius: 8,
+      color: 'black',
+      paddingRight: 30, // to ensure the text is never behind the icon
+    },
+  });
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 10,
     justifyContent: 'center',
-    
   },
   
   imagePreview: {
@@ -190,14 +203,9 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   icon: {
-    marginRight: 10,
+    marginRight: 6,
   },
 
-  box1: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'flex-end'
-  },
   atttext:{
     fontSize:20,
     paddingBottom: 10,
@@ -212,21 +220,20 @@ const styles = StyleSheet.create({
   camicon: {
     position: 'absolute',
     bottom: 10,
-    right: 10,
+    left: 10,
     zIndex: 1,
-    alignItems: 'center',  // Center the child elements horizontally
+    alignItems: 'center', 
   },
-  
   radicon: {
     width: 40,
     height: 40,
     borderRadius: 50,
     backgroundColor: '#0b1e59',
-    justifyContent: 'center',  // Center the content vertically
-    alignItems: 'center',      // Center the content horizontally
+    justifyContent: 'center',  
+    alignItems: 'center',    
   },
   button: {
-    backgroundColor: 'red',
+    backgroundColor: '#0b1e59',
     padding: 10,
     borderRadius: 5,
     alignItems: 'center',
@@ -240,4 +247,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AddAttendanceScreen;
+export default SelfDeposit;

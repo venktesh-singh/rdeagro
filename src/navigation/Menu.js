@@ -23,6 +23,7 @@ function CustomDrawerContent({
   //console.log(context);
   const vendorScreens = [
     'Home',
+    'Self Deposit',
     'My Cash',
     'Search',
     'About',
@@ -34,7 +35,8 @@ function CustomDrawerContent({
     'Printer',
     'Generate File',
     'My Expense',
-    'Attendance',  
+    'Attendance', 
+    'Attendance List', 
     'Material Received',
     'My Stock',
     'Purchase Indent',
