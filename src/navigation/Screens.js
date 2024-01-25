@@ -24,6 +24,7 @@ import Printer from '../screens/Printer';
 import GenerateFile from '../screens/GenerateFile';
 import Expense from '../screens/Expense';
 import Attendance from '../screens/Attendance';
+import AttendanceList from '../screens/AttendanceList';
 import MaterialReceived from '../screens/MaterialReceived';
 import Stock from '../screens/Stock';
 import PurchaseIndent from '../screens/PurchaseIndent'; 
@@ -36,6 +37,7 @@ import About from '../screens/About';
 import BioFertilizer from '../screens/BioFertilizer';
 import Fertilizer from '../screens/Fertilizer';
 import Fungicide from '../screens/Fungicide';
+import SelfDeposit from '../screens/SelfDeposit';
 
 
 const Stack = createStackNavigator();
@@ -108,6 +110,7 @@ export default function OnboardingStack(props) {
         <Drawer.Screen name="Generate File" component={GenerateFile} /> 
         <Drawer.Screen name="My Expense" component={Expense} /> 
         <Drawer.Screen name="Attendance" component={Attendance} />   
+        <Drawer.Screen name="Attendance List" component={AttendanceList}/>
         <Drawer.Screen name="Material Received" component={MaterialReceived} />   
         <Drawer.Screen name="My Stock" component={Stock} />
         <Drawer.Screen name="Purchase Indent" component={PurchaseIndent} />  
@@ -116,6 +119,7 @@ export default function OnboardingStack(props) {
         <Drawer.Screen name="Fertilizer" component={Fertilizer} />   
         <Drawer.Screen name="Fungicide" component={Fungicide} /> 
         <Drawer.Screen name="Billing Address" component={BillingAddress} />
+        <Drawer.Screen name="Self Deposit" component={SelfDeposit} />
       </Drawer.Navigator>
     );  
   }

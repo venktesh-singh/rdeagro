@@ -21,16 +21,24 @@ class Onboarding extends React.Component {
         <Block flex center>
           <ImageBackground
             source={Images.Onboarding}
-            style={{height, width, zIndex: -5}}
+            style={{height, width, zIndex: -5,paddingVertical:100}}     
           />
         </Block>
         <Block center>
-          <Image source={Images.MunchezeLogo} style={styles.logo} />
+          <Image source={Images.rdeargoLogo} style={styles.logo} />
         </Block>
 
         <Block flex space="between" style={styles.padded}>
-          <Block flex space="around" style={{zIndex: 2}}>
+          <Block flex space="between" style={{zIndex: 2}}>
             <Block center>
+              <Button
+                style={styles.button}
+                color={argonTheme.COLORS.PRIMARY}
+                onPress={() => navigation.navigate('User', {screen: 'Login'})}
+                textStyle={{color: 'white', fontWeight: 'bold', fontSize: 20}}>
+                Login
+              </Button>
+              {/*
               <Button
                 style={styles.button}
                 color={argonTheme.COLORS.PRIMARY}
@@ -39,14 +47,8 @@ class Onboarding extends React.Component {
                 }
                 textStyle={{color: 'white', fontWeight: 'bold', fontSize: 20}}>
                 Register
-              </Button>
-              <Button
-                style={styles.button}
-                color={argonTheme.COLORS.PRIMARY}
-                onPress={() => navigation.navigate('User', {screen: 'Login'})}
-                textStyle={{color: 'white', fontWeight: 'bold', fontSize: 20}}>
-                Login
-              </Button>
+              </Button> */}
+              
             </Block>
           </Block>
         </Block>
@@ -77,7 +79,7 @@ const styles = StyleSheet.create({
     height: 150,
     zIndex: 2,
     position: 'relative',
-    //borderRadius: 50,
+    //borderRadius: 10,
     marginTop: '-50%',
   },
   title: {

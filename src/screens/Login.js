@@ -106,12 +106,12 @@ const Login = props => {
 	}; */ 
 
   return (
-    <Block flex space="between">
+    <Block flex center space="between">
       <ImageBackground
         source={Images.RegisterBackground}
-        style={{width, height, zIndex: 1, paddingTop: 25}}>
+        style={{width, height, zIndex: 1, paddingVertical:100}}>
         <Block center>
-          <Image source={Images.MunchezeLogo} style={styles.logo} />
+          <Image source={Images.rdeargoLogo} style={styles.logo} />
         </Block>
         <Block flex center>
           <KeyboardAvoidingView style={{flex: 1}} behavior="padding" enabled>
@@ -138,15 +138,7 @@ const Login = props => {
                 onChangeText={text => setPassword(text)}
               />
             </Block>
-            <TouchableOpacity
-              onPress={() => {
-                props.navigation.push('Otp Verification');
-              }}>
-              <Text style={{marginBottom: 12}} bold color="#FFFFFF">
-                Forgot Password?
-              </Text>
-            </TouchableOpacity>
-                  
+               
             <Block middle>
               <Button style={styles.createButton} onPress={() => signIn()}>
                 <Text bold size={14} color={argonTheme.COLORS.WHITE}>
@@ -173,8 +165,6 @@ const Login = props => {
 const styles = StyleSheet.create({
   registerContainer: {
     width: width * 0.9,
-    // flex: 1,
-    // height: height * 0.5,
     backgroundColor: '#F4F5F7',
     borderRadius: 4,
     shadowColor: argonTheme.COLORS.BLACK,
@@ -192,8 +182,7 @@ const styles = StyleSheet.create({
     height: 150,
     zIndex: 2,
     position: 'relative',
-    //borderRadius: 50,
-    // marginTop: '-50%'
+    marginBottom:30
   },
   socialConnect: {
     backgroundColor: argonTheme.COLORS.WHITE,

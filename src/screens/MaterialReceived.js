@@ -1,6 +1,9 @@
-import React from 'react'; 
+import React, { useEffect, useState } from 'react'; 
 import { StyleSheet, View, ScrollView, Text, Dimensions } from 'react-native';
-import { Button } from 'galio-framework';
+import axios from 'axios';
+import { baseUrl } from '../constants/';
+import { useContext } from 'react';
+import { UserContext } from '../context';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
@@ -8,7 +11,49 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 const {width, height} = Dimensions.get('screen');
 
 
-const MaterialReceived = () => {    
+const MaterialReceived = () => {  
+    const [toastInfo, setToastInfo] = useState({ color: '', message: '' });
+    const [mreceived, setMReceived] = useState([]);
+    const [isShow, setShow] = useState(false);
+    const userData = useContext(UserContext);
+    const business_id = userData?.user?.data?.data?.business_id;
+    const location_id = userData?.user?.data?.data?.location_id;
+    const remember_token = userData?.user?.data?.remember_token;
+    const [selectedCategory, setSelectedCategory] = useState(null);
+    //console.log("Home data show : ",dashboard);
+    //console.log("Home data business_id : ",business_id);
+    //console.log("Home data location_id : ",location_id);
+    //console.log("Material Received data remember_token : ", JSON.stringify(userData.user.data.data, null, 2)); 
+
+    const getData = async () => {  
+        try {
+        if (remember_token) {
+            const response = await axios.post(`${baseUrl}/getpolists?remember_token=${remember_token}&business_id=${business_id}&location_id=${location_id}`);
+            const responseData = response?.data?.data || []; // Extracting data from the response
+            const stringfyData= JSON.stringify(responseData, null, 2);
+            //console.log("Response Material Received Data:", JSON.stringify(response, null, 2));   
+            setMReceived(responseData)  
+        } else {  
+            console.log("Token not getting", remember_token)
+        }
+        } catch (error) {
+        console.error("Error fetching categories data", error);
+        handleToast('Error fetching categories data. Try again later.', 'error');
+        }
+    };
+
+    useEffect(() => {
+        getData();
+    }, [remember_token]);
+
+    const handleToast = (message, color) => {
+        setShow(true);
+        setToastInfo({ message, color });
+        setTimeout(() => {
+        setShow(false);
+        }, 3000);
+    };
+    
     return (
         <>
             <Header title="Material Received" />

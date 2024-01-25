@@ -2,7 +2,7 @@ import argonTheme from './Theme';
 import Images from './Images';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const baseUrl = 'https://rdeagro.com';
+const baseUrl = 'https://test.rdeagro.com';
 
 const getToken = async () => {
   try {
