@@ -1,24 +1,26 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Image, StyleSheet, Alert, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, Image, StyleSheet, Alert, Picker, ScrollView, TouchableOpacity } from 'react-native';  
 import ImagePicker from 'react-native-image-picker';
 import axios from 'axios';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import Entypo from 'react-native-vector-icons/Entypo';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';  
+import FontAwesome from 'react-native-vector-icons/FontAwesome';  
+import AntDesign from 'react-native-vector-icons/AntDesign';  
+import Ionicons from 'react-native-vector-icons/Ionicons';  
+import Fontisto from 'react-native-vector-icons/Fontisto';
 import {Images} from '../constants/';
 import RNPickerSelect from 'react-native-picker-select';
 
 const SelfDeposit = ({ navigation }) => {
   const [paymenttype, setPaymentType] = useState('');
-  const [email, setEmail] = useState('');
-  const [message, setMessage] = useState('');
-  const [rememberToken, setRememberToken] = useState('');
-  const [businessId, setBusinessId] = useState('');
-  const [locationId, setLocationId] = useState('');
-  const [userId, setUserId] = useState('');
-  const [latitude, setLatitude] = useState('');
-  const [longitude, setLongitude] = useState('');
+  const [bank, setBank] = useState('');
+  const [amount, setAmount] = useState('');
+  const [transactiontype, setTransactionType] = useState('');
+  const [transactionno, setTransactionNo] = useState('');
+  const [date, setDate] = useState('');
+  const [remark, setRemark] = useState('');
   const [imageUri, setImageUri] = useState('');
 
   const handleImagePick = () => {
@@ -88,58 +90,119 @@ const SelfDeposit = ({ navigation }) => {
         <ScrollView>
           <View style={styles.container}>
             <View style={{backgroundColor:'#fff',paddingHorizontal:10,paddingVertical:10}}>
-                <View>
-                  <View style={styles.imageContainer}>
-                    {imageUri ? (
-                      <>
-                        <Image source={{ uri: imageUri }} style={styles.imagePreview} />
-                        <View style={[styles.camicon]}>
-                          <Entypo name="camera" size={30} color="#fff" onPress={handleImagePick} style={styles.radicon} />
-                        </View>
-                      </>
-                    ) : (
-                      <>
-                          <Image source={Images.RegisterBackground} style={styles.imagePreview} />
-                          <View style={styles.camicon}>
-                            <Entypo name="camera" size={30} color="#fff" onPress={handleImagePick} style={styles.radicon} />
-                          </View>
-                      </>
-                    )}
-                  </View>
+                
+            <View style={styles.imageContainer}>
+                {imageUri ? (
+                  <>
+                    <Image source={{ uri: imageUri }} style={styles.imagePreview} />
+                    <View style={[styles.camicon]}>
+                      <Entypo name="camera" size={30} color="#fff" onPress={handleImagePick} style={styles.radicon} />
+                    </View>
+                  </>
+                ) : (
+                  <>
+                    <Image source={Images.RegisterBackground} style={styles.imagePreview} />
+                    <View style={styles.camicon}>
+                      <Entypo name="camera" size={30} color="#fff" onPress={handleImagePick} style={styles.radicon} />
+                    </View>
+                  </>
+                )}
               </View>
 
-                <View style={styles.inputContainer}>
-                    <Entypo name="user" size={24} color="#000" style={styles.icon} />
-                    <RNPickerSelect
-                        onValueChange={(value) => console.log(value)}
-                        items={[
-                            { label: 'Football', value: 'football' },
-                            { label: 'Baseball', value: 'baseball' },
-                            { label: 'Hockey', value: 'hockey' },
-                        ]}
-                        style={{ ...pickerSelectStyles }}
-                    />
+              <View style={styles.inputContainer}>
+                <MaterialIcons name="payments" size={24} color="#000" style={styles.icon} />
+                <View style={{ flex: 1 }}>
+                  <RNPickerSelect
+                    style={pickerSelectStyles}
+                    onValueChange={(value) => setPaymentType(value)}
+                    placeholder={{ label: 'Payment Type', value: null }}
+                    items={[
+                      { label: 'Online', value: 'online' },
+                      { label: 'Offline', value: 'Offline' },
+                    ]}
+                  />
                 </View>
+              </View>
 
               <View style={styles.inputContainer}>
-                <Entypo name="mail" size={24} color="#000" style={styles.icon} />
+                <FontAwesome name="bank" size={24} color="#000" style={styles.icon} />
+                <View style={{ flex: 1 }}>
+                  <RNPickerSelect
+                    style={pickerSelectStyles}
+                    onValueChange={(value) => setBank(value)}
+                    placeholder={{ label: 'Select Bank', value: null }}
+                    items={[
+                      { label: 'SBI', value: 'sbi' },
+                      { label: 'RBI', value: 'rbi' },
+                      { label: 'SCB', value: 'scb' },
+                    ]}
+                  />
+                </View>
+              </View>
+
+              
+              <View style={styles.inputContainer}>
+                <FontAwesome name="rupee" size={24} color="#000" style={styles.icon} />
                 <TextInput
                   style={styles.input}
-                  placeholder="Email"
-                  value={email}
-                  onChangeText={text => setEmail(text)}
-                  keyboardType="email-address"
+                  placeholder="Amount"
+                  value={amount}
+                  onChangeText={text => setAmount(text)}
+                  keyboardType="default"
                 />
               </View>
 
               <View style={styles.inputContainer}>
-                <Entypo name="message" size={24} color="#000" style={styles.icon} />
+                <FontAwesome name="bank" size={24} color="#000" style={styles.icon} />
+                <View style={{ flex: 1 }}>
+                  <RNPickerSelect
+                    style={pickerSelectStyles}
+                    onValueChange={(value) => setTransactionType(value)}
+                    placeholder={{ label: 'Transaction Type', value: null }}
+                    items={[
+                      { label: 'NEFT', value: 'neft' },
+                      { label: 'IMPS', value: 'imps' },
+                    ]}
+                  />
+                </View>
+              </View>
+
+              <View style={styles.inputContainer}>
+              <AntDesign name="exclamationcircle" size={24} color="#000" style={styles.icon} />
                 <TextInput
                   style={styles.input}
-                  placeholder="Message"
-                  value={message}
-                  onChangeText={text => setMessage(text)}
+                  placeholder="Transaction Number"
+                  value={transactionno}
+                  onChangeText={text => setTransactionNo(text)}
                   keyboardType="default"
+                />
+              </View>
+
+              <View style={styles.inputContainer}>
+                <Fontisto name="date" size={24} color="#000" style={styles.icon} />
+                <View style={{ flex: 1 }}>
+                  <RNPickerSelect
+                    style={pickerSelectStyles}
+                    onValueChange={(value) => setDate(value)}
+                    placeholder={{ label: 'Date', value: null }}
+                    items={[
+                      { label: 'NEFT', value: 'neft' },
+                      { label: 'IMPS', value: 'imps' },
+                    ]}
+                  />
+                </View>
+              </View>
+
+              <View style={styles.inputContainer}>
+                <Ionicons name="earth" size={24} color="#000" style={styles.icon} />
+                <TextInput
+                  style={styles.input}
+                  placeholder="Remark"
+                  value={remark}
+                  onChangeText={text => setRemark(text)}
+                  keyboardType="default"
+                  multiline
+                  numberOfLines={4} 
                 />
               </View>
 
@@ -176,7 +239,7 @@ const pickerSelectStyles = StyleSheet.create({
       color: 'black',
       paddingRight: 30, // to ensure the text is never behind the icon
     },
-  });
+});
 
 const styles = StyleSheet.create({
   container: {
@@ -199,7 +262,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#71797E',
     borderRadius: 5,
-    padding: 5,
+    paddingLeft: 10,
     marginBottom: 16,
   },
   icon: {
@@ -219,16 +282,18 @@ const styles = StyleSheet.create({
   },
   camicon: {
     position: 'absolute',
-    bottom: 10,
-    left: 10,
+    bottom: 50,
+    left: 200, 
+    top:80, 
     zIndex: 1,
-    alignItems: 'center', 
+    textAlign: 'center', 
+    //backgroundColor: '#0b1e59', 
   },
   radicon: {
-    width: 40,
-    height: 40,
+    width: 50,
+    height: 50,
     borderRadius: 50,
-    backgroundColor: '#0b1e59',
+    color: '#000',
     justifyContent: 'center',  
     alignItems: 'center',    
   },
@@ -248,3 +313,4 @@ const styles = StyleSheet.create({
 });
 
 export default SelfDeposit;
+
