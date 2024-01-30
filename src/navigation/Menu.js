@@ -24,6 +24,8 @@ function CustomDrawerContent({
   const vendorScreens = [
     'Home',
     'Self Deposit',
+    'Customer List',
+    'Customer View',    
     'My Cash',
     'Search',
     'About',
@@ -34,7 +36,8 @@ function CustomDrawerContent({
     'My Order Details',
     'Printer',
     'Generate File',
-    'My Expense',
+    'Expense',
+    'Expense List',
     'Attendance', 
     'Attendance List', 
     'Material Received',

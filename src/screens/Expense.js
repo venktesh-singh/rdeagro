@@ -1,214 +1,302 @@
-import React from 'react'; 
-import { StyleSheet, View, ScrollView, Text, Dimensions } from 'react-native';
-import { Button } from 'galio-framework';
+import React, { useState } from 'react';
+import { View, Text, TextInput, Image, StyleSheet, Alert, Picker, ScrollView, TouchableOpacity } from 'react-native';  
+import ImagePicker from 'react-native-image-picker';
+import axios from 'axios';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
-import Icon from 'react-native-vector-icons/FontAwesome';    
-const {width, height} = Dimensions.get('screen');
+import Entypo from 'react-native-vector-icons/Entypo';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';  
+import FontAwesome from 'react-native-vector-icons/FontAwesome';  
+import AntDesign from 'react-native-vector-icons/AntDesign';  
+import Ionicons from 'react-native-vector-icons/Ionicons';  
+import Fontisto from 'react-native-vector-icons/Fontisto';
+import {Images} from '../constants/';
+import RNPickerSelect from 'react-native-picker-select';
 
+const Expense = ({ navigation }) => {
+  const [expensecat, setExpensecat] = useState('');
+  const [expenseSubCat, setExpenseSubCat] = useState('');
+  const [amount, setAmount] = useState('');
+  const [transactiontype, setTransactionType] = useState('');
+  const [referenceno, setReferenceNo] = useState('');
+  const [expensedate, setExpenseDate] = useState('');
+  const [remark, setRemark] = useState('');
+  const [imageUri, setImageUri] = useState('');
 
-const Expense = () => {    
-    return (
-        <>
-            <Header title="My Expense" />
-            <ScrollView contentContainerStyle={styles.scrollViewContent}>
-                <View style={styles.container}>
-                    <View style={styles.addbox}>
-                        <Text style={styles.extitleadd}>Total Expense</Text>
-                        <View style={styles.exheadall}>  
-                            <Text style={styles.titleadd}><Icon name="inr" size={20} color="black" />48000.00</Text>
-                        </View>
-                        <View style={styles.parallelcon}>
-                            <Text style={styles.titleadd}>Due </Text>
-                            <Text style={styles.resap}> <Icon name="inr" size={20} color="black" />24000.00</Text>
-                        </View>
-                        <View style={styles.parallelcon}>
-                            <Text style={styles.titleadd}>Paid </Text>
-                            <Text style={styles.resap}> <Icon name="inr" size={20} color="black" />24000.00</Text>
-                        </View>
+  const handleImagePick = () => {
+    const options = {
+      title: 'Select Image',
+      storageOptions: {
+        skipBackup: true,
+        path: 'images',
+      },
+    };
+
+    ImagePicker.launchImageLibrary(options, response => {
+      if (response.didCancel) {
+        console.log('User cancelled image picker');
+      } else if (response.error) {
+        console.log('ImagePicker Error: ', response.error);
+      } else {
+        const source = { uri: response.uri };
+        setImageUri(source.uri);
+      }
+    });
+  };
+
+  const handleAddAttendance = async () => {
+    try {
+      const formData = new FormData();
+      formData.append('remember_token', rememberToken);
+      formData.append('business_id', businessId);
+      formData.append('location_id', locationId);
+      formData.append('user_id', userId);
+      formData.append('latitude', latitude);
+      formData.append('longitude', longitude);
+
+      const image = {
+        uri: imageUri,
+        type: 'image/jpeg',
+        name: 'attendanceImage.jpg',
+      };
+      formData.append('image', image);
+
+      const response = await axios.post('https://rdeagro.com/adduserattendance', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+
+      // Handle response as needed
+      console.log('Attendance added:', response.data);
+
+      // Reset fields after successful submission
+      setRememberToken('');
+      setBusinessId('');
+      setLocationId('');
+      setUserId('');
+      setLatitude('');
+      setLongitude('');
+      setImageUri('');
+    } catch (error) {
+      console.error('Error adding attendance:', error);
+      Alert.alert('Error adding attendance. Please try again.');
+    }
+  };
+
+  return (
+    <View style={{ flex: 1,backgroundColor:'#e5e5e5', }}>
+      <Header title="My Expense" />
+        <ScrollView>
+          <View style={styles.container}>
+            <View style={{backgroundColor:'#fff',paddingHorizontal:10,paddingVertical:10}}>
+                
+            <View style={styles.imageContainer}>
+                {imageUri ? (
+                  <>
+                    <Image source={{ uri: imageUri }} style={styles.imagePreview} />
+                    <View style={[styles.camicon]}>
+                      <Entypo name="camera" size={30} color="#fff" onPress={handleImagePick} style={styles.radicon} />
                     </View>
-                    <View style={styles.gbuttonContainer}>
-                        <View style={styles.addbox}>
-                            <Text style={styles.listtitleadd}>Expenses List</Text>
-                        </View>
+                  </>
+                ) : (
+                  <>
+                    <Image source={Images.RegisterBackground} style={styles.imagePreview} />
+                    <View style={styles.camicon}>
+                      <Entypo name="camera" size={30} color="#fff" onPress={handleImagePick} style={styles.radicon} />
                     </View>
+                  </>
+                )}
+              </View>
 
-                    <View style={styles.addbox}>
-                        <View style={styles.headall}>  
-                            <Text style={styles.titleadd}>Category</Text>
-                            <Text style={styles.exresap}>Store Expense</Text>
-                        </View>
-                        <View style={styles.parallelcon}>
-                            <Text style={styles.titleadd}>Location</Text>
-                            <Text style={styles.resap}> SZP-Rosa</Text>
-                        </View>
-                        <View style={styles.parallelcon}>
-                            <Text style={styles.titleadd}>Amount</Text>
-                            <Text style={styles.resap}><Icon name="inr" size={20} color="black" />22.0</Text>
-                        </View>
-                        <View style={styles.parallelcon}>
-                            <Text style={styles.titleadd}>Payment Status</Text>
-                            <Text style={[styles.resap,styles.newclr]}> Due</Text>
-                        </View>
-                        <View style={styles.parallelcon}>
-                            <Text style={styles.titleadd}>Expense Date</Text>
-                            <Text style={[styles.resap,styles.dteadd]}> 2023-11-12 16:45:01</Text> 
-                        </View>
-                    </View>
-
-
-                    <View style={styles.addbox}>
-                        <View style={styles.headall}>  
-                            <Text style={styles.titleadd}>Category</Text>
-                            <Text style={styles.exresap}>Store Expense</Text>
-                        </View>
-                        <View style={styles.parallelcon}>
-                            <Text style={styles.titleadd}>No. of Products</Text>
-                            <Text style={styles.resap}> 2</Text>
-                        </View>
-                        <View style={styles.parallelcon}>
-                            <Text style={styles.titleadd}>Checkout Price</Text>
-                            <Text style={styles.resap}><Icon name="inr" size={20} color="black" /> 22</Text>
-                        </View>
-                        <View style={styles.parallelcon}>
-                            <Text style={styles.titleadd}>Order Status</Text>
-                            <Text style={[styles.resap,styles.newclr]}> final/cash</Text>
-                        </View>
-                        <View style={styles.parallelcon}>
-                            <Text style={styles.titleadd}>Order date</Text>
-                            <Text style={[styles.resap,styles.dteadd]}> 2023-11-12 16:45:01</Text> 
-                        </View>
-                    </View>
-
-
-                    <View style={styles.addbox}>
-                        <View style={styles.headall}>  
-                            <Text style={styles.titleadd}>Category</Text>
-                            <Text style={styles.exresap}>Store Expense</Text>
-                        </View>
-                        <View style={styles.parallelcon}>
-                            <Text style={styles.titleadd}>No. of Products</Text>
-                            <Text style={styles.resap}> 2</Text>
-                        </View>
-                        <View style={styles.parallelcon}>
-                            <Text style={styles.titleadd}>Checkout Price</Text>
-                            <Text style={styles.resap}><Icon name="inr" size={20} color="black" /> 22</Text>
-                        </View>
-                        <View style={styles.parallelcon}>
-                            <Text style={styles.titleadd}>Order Status</Text>
-                            <Text style={[styles.resap,styles.newclr]}> final/cash</Text>
-                        </View>
-                        <View style={styles.parallelcon}>
-                            <Text style={styles.titleadd}>Order date</Text>
-                            <Text style={[styles.resap,styles.dteadd]}> 2023-11-12 16:45:01</Text> 
-                        </View>
-                    </View>
+              <View style={styles.inputContainer}>
+                <MaterialIcons name="calendar-today" size={24} color="#000" style={styles.icon} />
+                <View style={{ flex: 1 }}>
+                  <RNPickerSelect
+                    style={pickerSelectStyles}
+                    onValueChange={(value) => setExpensecat(value)}
+                    placeholder={{ label: 'Select Expense Category', value: null }}
+                    items={[
+                      { label: 'Online', value: 'online' },
+                      { label: 'Offline', value: 'Offline' },
+                    ]}
+                  />
                 </View>
-            </ScrollView>  
-            <Footer/>      
-        </>
-    );
+              </View>
+
+              <View style={styles.inputContainer}>
+                <MaterialIcons name="calendar-today" size={24} color="#000" style={styles.icon} />
+                <View style={{ flex: 1 }}>
+                  <RNPickerSelect
+                    style={pickerSelectStyles}
+                    onValueChange={(value) => setExpenseSubCat(value)}
+                    placeholder={{ label: 'Select Sub Expense Category', value: null }}
+                    items={[
+                      { label: 'SBI', value: 'sbi' },
+                      { label: 'RBI', value: 'rbi' },
+                      { label: 'SCB', value: 'scb' },
+                    ]}
+                  />
+                </View>
+              </View>
+
+              <View style={styles.inputContainer}>
+                <MaterialIcons name="calendar-today" size={24} color="#000" style={styles.icon} />
+                <View style={{ flex: 1 }}>
+                  <RNPickerSelect
+                    style={pickerSelectStyles}
+                    onValueChange={(value) => setExpenseDate(value)}
+                    placeholder={{ label: 'Date of Expense', value: null }}
+                    items={[
+                      { label: 'NEFT', value: 'neft' },
+                      { label: 'IMPS', value: 'imps' },
+                    ]}
+                  />
+                </View>
+              </View>
+              
+              <View style={styles.inputContainer}>
+                <FontAwesome name="rupee" size={24} color="#000" style={styles.icon} />
+                <TextInput
+                  style={styles.input}
+                  placeholder="Amount"
+                  value={amount}
+                  onChangeText={text => setAmount(text)}
+                  keyboardType="default"
+                />
+              </View>
+
+              
+
+              <View style={styles.inputContainer}>
+              <AntDesign name="mobile1" size={24} color="#000" style={styles.icon} />
+                <TextInput
+                  style={styles.input}
+                  placeholder="Referenec Number"
+                  value={referenceno}
+                  onChangeText={text => setReferenceNo(text)}
+                  keyboardType="default"
+                />
+              </View>
+
+             
+
+              <View style={styles.inputContainer}>
+                <AntDesign name="mobile1" size={24} color="#000" style={styles.icon} />
+                <TextInput
+                  style={styles.input}
+                  placeholder="Remark"
+                  value={remark}
+                  onChangeText={text => setRemark(text)}
+                  keyboardType="default"
+                  multiline
+                />
+              </View>
+
+              <TouchableOpacity onPress={handleAddAttendance} style={styles.button} >
+                  <Text style={styles.buttonText}>SAVE CHANGES</Text>
+              </TouchableOpacity>
+
+            </View>
+          </View>
+        </ScrollView>
+      <Footer />
+    </View>
+  );
 };
 
+const pickerSelectStyles = StyleSheet.create({
+    inputIOS: {
+      fontSize: 16,
+      paddingVertical: 12,
+      paddingHorizontal: 10,
+      borderWidth: 1,
+      borderColor: 'gray',
+      borderRadius: 4,
+      color: 'black',
+      paddingRight: 30, // to ensure the text is never behind the icon
+    },
+    inputAndroid: {
+      fontSize: 16,
+      paddingHorizontal: 10,
+      paddingVertical: 8,
+      borderWidth: 0.5,
+      borderColor: 'purple',
+      borderRadius: 8,
+      color: 'black',
+      paddingRight: 30, // to ensure the text is never behind the icon
+    },
+});
+
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-    },
-    addbox: {
-        backgroundColor: '#ffffff', 
-        borderRadius: 8, 
-        marginVertical: 10,
-        marginHorizontal: 10,
-    },
-    scrollViewContent: {
-      flexGrow: 1,
-      padding: 6,
-      backgroundColor: '#e5e5e5',
-    },
-    titleadd: {
-        fontWeight: 'bold',
-        fontSize: 20,
-    },
-    listtitleadd: {
-        fontWeight: 'bold',
-        fontSize: 20,
-        paddingHorizontal:50,
-        paddingVertical:10
-    },
-    extitleadd:{
-        fontWeight: 'bold',
-        fontSize: 20,
-        paddingVertical:6,
-        paddingHorizontal:10 
-    },
-    headall: {
-      borderBottomWidth: 1,
-      borderBottomColor: '#E6E6E6',
-      marginBottom: 8,
-      paddingVertical:7,
-      paddingHorizontal:15, 
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignItems: 'flex-end',     
-    }, 
-    exheadall: {
-        borderBottomWidth: 2,
-        borderBottomColor: '#E6E6E6',
-        marginBottom: 8,
-        paddingVertical:7,
-        paddingHorizontal:15, 
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'flex-end',
-    }, 
-    footall: {
-        borderTopWidth: 1,
-        borderTopColor: '#E6E6E6',
-        flexDirection: 'row',
-        alignItems: 'flex-end',
-        justifyContent: 'space-between',
-        paddingVertical: 7,
-        paddingHorizontal:16
-    },
-    parallelcon: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'flex-end',
-        marginBottom: 8,
-        paddingVertical:6,
-        paddingHorizontal:10  
-    },
-    resap: {  
-        fontSize:20
-    },
-    exresap: {
-        fontSize:20,
-        color:'#0096FF',
-        fontWeight:'bold'
-    },
-    newclr: {
-        color:'red'
-    },
-    createButton: {
-      width: width * 0.3,
-      marginTop: 10,
-      backgroundColor: '#DB6018',
-    },
-    btntxt: {
-      color:'#fff',
-      fontSize:18,
-      fontWeight:'bold'
-    },
-    dteadd: {
-      color:'#4169E1'
-    },
-    gbuttonContainer: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-});  
+  container: {
+    flex: 1,
+    padding: 10,
+    justifyContent: 'center',
+  },
+  
+  imagePreview: {
+    width: 100,
+    height: 100,
+    marginTop: 20,
+    marginBottom: 20,
+    alignSelf: 'center',  
+    borderRadius: 50,
+  },
+  inputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#71797E',
+    borderRadius: 5,
+    paddingLeft: 10,
+    marginBottom: 16,
+  },
+  icon: {
+    marginRight: 6,
+  },
+
+  atttext:{
+    fontSize:20,
+    paddingBottom: 10,
+  },
+  boxshadowicon:{
+    marginBottom:40,
+  },
+  imageContainer: {
+    position: 'relative',
+    marginBottom: 15,
+  },
+  camicon: {
+    position: 'absolute',
+    bottom: 50,
+    left: 200, 
+    top:80, 
+    zIndex: 1,
+    textAlign: 'center', 
+    //backgroundColor: '#0b1e59', 
+  },
+  radicon: {
+    width: 50,
+    height: 50,
+    borderRadius: 50,
+    color: '#000',
+    justifyContent: 'center',  
+    alignItems: 'center',    
+  },
+  button: {
+    backgroundColor: '#0b1e59',
+    padding: 10,
+    borderRadius: 5,
+    alignItems: 'center',
+  },
+  buttonText: {
+    color: '#fff',
+    fontSize: 16,
+  },   
+  addmap:{
+    flex:1
+  },
+});
 
 export default Expense;
- 

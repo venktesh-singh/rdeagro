@@ -22,7 +22,7 @@ import ResetPassword from '../screens/ResetPassword';
 import Cart from '../screens/cart';    
 import Printer from '../screens/Printer';
 import GenerateFile from '../screens/GenerateFile';
-import Expense from '../screens/Expense';
+import ExpenseList from '../screens/ExpenseList';
 import Attendance from '../screens/Attendance';
 import AttendanceList from '../screens/AttendanceList';
 import MaterialReceived from '../screens/MaterialReceived';
@@ -38,7 +38,9 @@ import BioFertilizer from '../screens/BioFertilizer';
 import Fertilizer from '../screens/Fertilizer';
 import Fungicide from '../screens/Fungicide';
 import SelfDeposit from '../screens/SelfDeposit';
-
+import Expense from '../screens/Expense';
+import CustomerList from '../screens/CustomerList';
+import CustomerView from '../screens/CustomerView'; 
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -107,8 +109,9 @@ export default function OnboardingStack(props) {
         <Drawer.Screen name="My Orders" component={Orders} />
         <Drawer.Screen name="My Order Details" component={OrderDetails} />  
         <Drawer.Screen name="Printer" component={Printer} />  
-        <Drawer.Screen name="Generate File" component={GenerateFile} /> 
-        <Drawer.Screen name="My Expense" component={Expense} /> 
+        <Drawer.Screen name="Generate File" component={GenerateFile} />   
+        <Drawer.Screen name="Expense" component={Expense} />
+        <Drawer.Screen name="Expense List" component={ExpenseList} /> 
         <Drawer.Screen name="Attendance" component={Attendance} />   
         <Drawer.Screen name="Attendance List" component={AttendanceList}/>
         <Drawer.Screen name="Material Received" component={MaterialReceived} />   
@@ -120,6 +123,8 @@ export default function OnboardingStack(props) {
         <Drawer.Screen name="Fungicide" component={Fungicide} /> 
         <Drawer.Screen name="Billing Address" component={BillingAddress} />
         <Drawer.Screen name="Self Deposit" component={SelfDeposit} />
+        <Drawer.Screen name="Customer List" component={CustomerList}/> 
+        <Drawer.Screen name="Customer View" component={CustomerView}/>
       </Drawer.Navigator>
     );  
   }
