@@ -10,7 +10,7 @@ import {UserContext} from '../../src/context';
 import FAIcon from 'react-native-vector-icons/FontAwesome';
 import {argonTheme} from '../constants';
 
-function CustomDrawerContent({
+function CustomDrawerContent({  
   drawerPosition,
   navigation,
   profile,
@@ -24,8 +24,10 @@ function CustomDrawerContent({
   const vendorScreens = [
     'Home',
     'Self Deposit',
-    'Customer List',
-    'Customer View',    
+    'Contact List',
+    'Contact Detail',  
+    'Contact Add', 
+    'Edit Contact',   
     'My Cash',
     'Search',
     'About',
