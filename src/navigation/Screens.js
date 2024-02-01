@@ -40,7 +40,9 @@ import Fungicide from '../screens/Fungicide';
 import SelfDeposit from '../screens/SelfDeposit';
 import Expense from '../screens/Expense';
 import CustomerList from '../screens/CustomerList';
-import CustomerView from '../screens/CustomerView'; 
+import CustomerDetail from '../screens/CustomerDetail';
+import CustomerAdd from '../screens/CustomerAdd';
+import CustomerEdit from '../screens/CustomerEdit';
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -123,8 +125,10 @@ export default function OnboardingStack(props) {
         <Drawer.Screen name="Fungicide" component={Fungicide} /> 
         <Drawer.Screen name="Billing Address" component={BillingAddress} />
         <Drawer.Screen name="Self Deposit" component={SelfDeposit} />
-        <Drawer.Screen name="Customer List" component={CustomerList}/> 
-        <Drawer.Screen name="Customer View" component={CustomerView}/>
+        <Drawer.Screen name="Contact List" component={CustomerList}/> 
+        <Drawer.Screen name="Contact Detail" component={CustomerDetail}/>    
+        <Drawer.Screen name="Contact Add" component={CustomerAdd}/>  
+        <Drawer.Screen name="Edit Contact" component={CustomerEdit}/> 
       </Drawer.Navigator>
     );  
   }

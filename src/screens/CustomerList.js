@@ -1,19 +1,46 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, StyleSheet, ScrollView, TouchableOpacity, SafeAreaView } from 'react-native';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import Feather from 'react-native-vector-icons/Feather';
-import Entypo from 'react-native-vector-icons/Entypo';
-import moment from 'moment'; 
+import Entypo from 'react-native-vector-icons/Entypo'; 
 import { argonTheme } from '../constants/';
 import { Toast } from 'galio-framework';
+import { useContext } from 'react';
+import { UserContext } from '../context';
+import { baseUrl } from '../constants/';
+import axios from 'axios';
 
 const CustomerList = () => {
     const [userData, setUserData] = useState([]);
     const [isShow, setShow] = useState(false);
     const [toastInfo, setToastInfo] = useState({color: '', message: ''});
-    //const context = useContext(UserContext);
+    const userCData = useContext(UserContext);  
+    const business_id = userCData?.user?.data?.data?.business_id;
+    const location_id = userCData?.user?.data?.data?.location_id;
+    const remember_token = userCData?.user?.data?.remember_token;  
+    console.log("All Contact data : ", userData.data);        
   
+    const getData = async () => {  
+      try {
+        if (remember_token) {
+          const response = await axios.post(`${baseUrl}/getcontactslist?remember_token=${remember_token}&business_id=${business_id}&location_id=${location_id}`);
+          const responseData = response?.data?.data || []; // Extracting data from the response
+          console.log("Response All Contact Data:", JSON.stringify(response?.data, null, 2));   
+          setUserData(responseData)  
+        } else {  
+          console.log("Token not getting", remember_token)
+        }
+      } catch (error) {
+        console.error("Error fetching categories data", error);
+        handleToast('Error fetching categories data. Try again later.', 'error');
+      }
+    };
+  
+    useEffect(() => {
+      getData();
+    }, [remember_token]);
+
     const handleToast = (message, color) => {
       setShow(true);
       setToastInfo({message, color});
@@ -22,10 +49,8 @@ const CustomerList = () => {
       }, 3000);
     };
 
-    const FlatListComponent = ({ item, index }) => {
-        let now = moment().format('DD-MM-YYYY');
-        let deadline = moment(item?.deadline).format('DD-MM-YYYY');
-        let deadline_reached = now < deadline ? true : false;
+    const FlatListComponent = ({ item }) => {
+        
     
         return (
           <ScrollView>
@@ -65,7 +90,7 @@ const CustomerList = () => {
                         marginRight: 10,
                       }}
                     >
-                      { 1}
+                      { item?.contact_id }
                     </Text>
                   </View>
                   <View style={{ justifyContent: 'center', alignItems: 'center' }}>
@@ -119,7 +144,7 @@ const CustomerList = () => {
                         marginRight: 10,
                       }}
                     >
-                      {'Sita'}
+                      {item?.name}
                     </Text>
                   </View>
                   <View style={{ justifyContent: 'center', alignItems: 'center' }}>
@@ -146,7 +171,7 @@ const CustomerList = () => {
                         marginRight: 10,
                       }}
                     >
-                      {'787677887'}
+                      {item.mobile}
                     </Text>
                   </View>
                 </ScrollView>
@@ -166,7 +191,7 @@ const CustomerList = () => {
                       style={{ marginRight: 10, marginTop: 15, marginLeft: 10 }}
                     />
                   </TouchableOpacity>
-                  <TouchableOpacity onPress={() => deleteCustomer(item?._id)}>
+                  <TouchableOpacity onPress={() => deleteCustomer(item?.id)}>
                     <Entypo
                       name="cross"
                       size={25}
@@ -181,43 +206,34 @@ const CustomerList = () => {
         );
       };
 
-      const FlatListHeader = () => {
-        return (
-          <View>
-            
-          </View>
-        );
-      };  
-
   return (
     <>
-    <Header title="Customer List" />
-        <SafeAreaView style={styles.scrollView}>
+    <Header title="Contact List" />
+          <SafeAreaView style={styles.scrollView}>
             <View>
-            <FlatList
-                data={userData}
-                ListHeaderComponent={FlatListHeader}
-                contentContainerStyle={{ marginHorizontal: 20 }}
-                renderItem={FlatListComponent}
-
-                ListEmptyComponent={() => {
-                return (
-                        <View style={{ alignSelf: 'center', justifyContent: 'center', alignItems: 'center', marginTop: "100%" }}>
-                            <Text>{'Customer list not found !!'}</Text>
-                        </View>
-                    )
-                }}
-            />
+              <FlatList
+                  data={userData}
+                  keyExtractor={(item) => item?.id?.toString()}
+                  renderItem={FlatListComponent}
+                  ListEmptyComponent={() => (
+                    <View style={{ alignSelf: 'center', justifyContent: 'center', alignItems: 'center', marginTop: "100%" }}>
+                      <Text>{'Customer list not found !!'}</Text>
+                    </View>
+                  )}
+                />
             </View>
-            
-        </SafeAreaView>
+          </SafeAreaView>
         <View style={styles.addIcon}>
-           
-            <Entypo
+           <Entypo
             name="plus"
             size={35}
             style={styles.icon}
-            
+            onPress={() =>
+              navigation.navigate({
+                name: 'Contact Add',
+                params: { post: 'Customer' },
+              })
+            }
             />
         </View>
         <Toast
